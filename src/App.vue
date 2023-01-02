@@ -43,6 +43,8 @@
     <h3>Data received</h3>
     <b>initData</b>: {{ TWA.initData }} <br>
     <b>initDataUnsafe</b>: <pre>{{ TWA.initDataUnsafe }}</pre><br>
+    <b>platform</b>: <pre>{{ TWA.platform }}</pre><br>
+ 
 
     <h3>Bot API version available</h3>
     <b>version</b>: {{ TWA.version }} <br>
@@ -68,6 +70,8 @@
 
     <h3>QR scanner</h3>
     <button @click="showQRScanner()">Scan QR code</button><br>
+    <h3>Clipboard</h3>
+    <button @click="TWA.readTextFromClipboard()">Press to read the clipboard</button> <br> {{ clipboard }}<br>
     <h3>Popups</h3>
     <button @click="TWA.showAlert('Showing an Alert!!')">Show Alert</button><br>
     <button @click="TWA.showConfirm('Showing confirm message')">Show Confirm</button><br>
@@ -100,6 +104,7 @@ export default {
   data() {
     return {
       style_selected: 'medium',
+      clipboard: null,
     };
   },
   created() {
@@ -116,6 +121,8 @@ export default {
     // Commenting this otherwise I'm stuck in a loop
     //this.TWA.onEvent('popupClosed', this.popupClosed);
     this.TWA.onEvent('qrTextReceived', this.processQRCode);
+    this.TWA.onEvent('clipboardTextReceived', this.processClipboard);
+    
   },
   mounted() {
     // What is the best? mounted or created??
@@ -148,6 +155,17 @@ export default {
     processQRCode(data) {
        this.TWA.closeScanQrPopup();
        this.TWA.showAlert(data.data);
+    },
+    processClipboard(data) {
+      if (data.data === null) {
+        this.clipboard = "The Web App has no access to the clipboard"
+        return;
+      }
+      if (data.data == '') {
+        this.clipboard = "Clipboard content is not a string"
+        return;
+      }
+      this.clipboard = data.data;
     },
     // End of callbacks
     showQRScanner() {
@@ -246,6 +264,7 @@ link_color          var(--tg-theme-link-color).
 #main {
   background-color: var(--tg-theme-bg-color, white);
   color: var(--tg-theme-text-color, black);
+  word-wrap: break-word;
 }
 b {
   color: var(--tg-theme-hint-color, black);
