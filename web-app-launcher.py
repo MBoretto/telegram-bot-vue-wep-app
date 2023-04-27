@@ -20,6 +20,8 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Callback
 
 TOKEN = 'yourbottoken'
 URL = 'https://mboretto.github.io/telegram-bot-vue-wep-app/'
+# This have to be configured with botfather
+BOT_FATHER_URL = 't.me/yourbot/appname'
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -30,10 +32,11 @@ logger = logging.getLogger(__name__)
 def start(update: Update, context: CallbackContext) -> None:
     """Sends a message with three inline buttons attached."""
     keyboard = [
-        [InlineKeyboardButton("Launch Web App", web_app=WebAppInfo(url=URL))],
+        [InlineKeyboardButton("Launch Web App (WebAppInfo) only private chats", web_app=WebAppInfo(url=URL))],
+        [InlineKeyboardButton("Launch Web App (Botfather link)", url=BOT_FATHER_URL)],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('Press to launch the Web App', reply_markup=reply_markup)
+    update.message.reply_text('Press to launch the Web App [webapp](' + BOT_FATHER_URL + ')', parse_mode='MarkdownV2', reply_markup=reply_markup)
 
 
 def button(update: Update, context: CallbackContext) -> None:
