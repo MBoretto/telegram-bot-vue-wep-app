@@ -99,7 +99,7 @@
     <div v-for="value in cloud_storage_values">
       {{ value }} <br>
     </div>
-    <button @click="TWA.CloudStorage.getItems(this.processItems)">Get Values</button><br>
+    <button @click="TWA.CloudStorage.getItems(cloud_storage_keys, this.processItems)">Get Values</button><br>
 
   </div>
 </template>
