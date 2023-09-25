@@ -82,10 +82,9 @@
  
 
 
-    <input type="text" id="key" name="key" placeholder="key">
-    <input type="text" id="value" name="value" placeholder="value">
-    <button @click="TWA.CloudStorage.setItem(document.getElementById('key').value, document.getElementById('value').value)">Set key</button><br>
-    <button @click="TWA.CloudStorage.setItem('thekey', 'the value')">Set key no form</button><br>
+    <input type="text" id="key" name="key" placeholder="key" v-model="key">
+    <input type="text" id="value" name="value" placeholder="value" v-model="value">
+    <button @click="add()">Set key no form</button><br>
 
     
     <div v-for="key in cloud_storage_keys">
@@ -95,6 +94,9 @@
     <br>
 
     <button @click="TWA.CloudStorage.getKeys(this.processKeys)">Get keys</button><br>
+
+
+    
   </div>
 </template>
 
@@ -123,6 +125,8 @@ export default {
       style_selected: 'medium',
       clipboard: null,
       cloud_storage_keys: null,
+      key: null,
+      value: null
     };
   },
   created() {
@@ -186,6 +190,10 @@ export default {
       this.clipboard = data.data;
     },
     // End of callbacks
+    add() {
+      this.TWA.CloudStorage.setItem(this.key, this.value);
+      this.TWA.showAlert('Item added');
+    },
     showQRScanner() {
       const par = {
           text: "Press to scan"
