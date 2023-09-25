@@ -83,12 +83,12 @@
 
 
     <input type="text" id="key" name="key" placeholder="key" v-model="akey">
-    <input type="text" id="value" name="value" placeholder="value" v-model="value">
-    <button @click="add()">Set key</button><br>
+    <input type="text" id="value" name="value" placeholder="value" v-model="avalue">
+    <button @click="addKeyValue()">Set key</button><br>
 
     
     <div v-for="key in cloud_storage_keys">
-      {{ key }} <br>
+      {{ key }} <button @click="removeKey(key)">Set key</button><br>
     </div>
 
     <br>
@@ -190,10 +190,16 @@ export default {
       this.clipboard = data.data;
     },
     // End of callbacks
-    add() {
+    //Cloud Storage
+    addKeyValue() {
       this.TWA.CloudStorage.setItem(this.akey, this.avalue);
       this.TWA.showAlert('Item added key: ' + this.akey + ' value: ' + this.avalue);
     },
+    removeKey(key) {
+      this.TWA.CloudStorage.removeItem(key);
+      this.TWA.showAlert('Removed key: ' + key);
+    },
+    // End of Cloud Storage
     showQRScanner() {
       const par = {
           text: "Press to scan"
