@@ -88,7 +88,7 @@
 
     
     <div v-for="key in cloud_storage_keys">
-      {{ key }} <button @click="removeKey(key)">Set key</button><br>
+      {{ key }} <button @click="removeKey(key)">Delete</button><br>
     </div>
 
     <br>
@@ -96,6 +96,10 @@
     <button @click="TWA.CloudStorage.getKeys(this.processKeys)">Get keys</button><br>
 
 
+    <div v-for="value in cloud_storage_values">
+      {{ value }} <br>
+    </div>
+    <button @click="TWA.CloudStorage.getItems(this.processItems)">Get Values</button><br>
 
   </div>
 </template>
@@ -124,7 +128,8 @@ export default {
     return {
       style_selected: 'medium',
       clipboard: null,
-      cloud_storage_keys: null,
+      cloud_storage_keys: [],
+      cloud_storage_values: [],
       akey: null,
       avalue: null,
     };
@@ -198,6 +203,20 @@ export default {
     removeKey(key) {
       this.TWA.CloudStorage.removeItem(key);
       this.TWA.showAlert('Removed key: ' + key);
+    },
+    processKeys(error, data) {
+      if (error) {
+        this.TWA.showAlert(error);
+        return;
+      }
+      this.cloud_storage_keys = data;
+    },
+    processItems(error, data) {
+      if (error) {
+        this.TWA.showAlert(error);
+        return;
+      }
+      this.cloud_storage_values = data;
     },
     // End of Cloud Storage
     showQRScanner() {
@@ -282,13 +301,6 @@ export default {
                   };
 
       this.TWA.showPopup(par);
-    },
-    processKeys(error, data) {
-      if (error) {
-        this.TWA.showAlert(error);
-        return;
-      }
-      this.cloud_storage_keys = data;
     }
   }
 }
