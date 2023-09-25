@@ -80,14 +80,20 @@
     <br>
     <h3>Cloud Storage</h3>
  
+
+
+    <input type="text" id="key" name="key" placeholder="key">
+    <input type="text" id="value" name="value" placeholder="value">
     <button @click="TWA.CloudStorage.setItem(document.getElementById('key').value, document.getElementById('value').value)">Set key</button><br>
+    <button @click="TWA.CloudStorage.setItem('thekey', 'the value')">Set key no form</button><br>
+
     
     <div v-for="key in cloud_storage_keys">
       {{ key }} <br>
     </div>
+
     <br>
-    <input type="text" id="key" name="key" placeholder="key">
-    <input type="text" id="value" name="value" placeholder="value">
+
     <button @click="TWA.CloudStorage.getKeys(this.processKeys)">Get keys</button><br>
   </div>
 </template>
