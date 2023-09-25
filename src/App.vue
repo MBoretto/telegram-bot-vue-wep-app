@@ -88,7 +88,7 @@
 
     
     <div v-for="key in cloud_storage_keys">
-      {{ key }} <button @click="removeKey(key)">Delete</button><br>
+      - {{ key }} <button @click="removeKey(key)">Delete</button><br>
     </div>
 
     <br>
@@ -97,7 +97,7 @@
 
 
     <div v-for="value in cloud_storage_values">
-      {{ value }} <br>
+      - {{ value }} <br>
     </div>
     <button @click="TWA.CloudStorage.getItems(cloud_storage_keys, this.processItems)">Get Values</button><br>
 
@@ -197,6 +197,26 @@ export default {
     // End of callbacks
     //Cloud Storage
     addKeyValue() {
+
+      if (this.akey === null || this.akey === '') {
+        this.TWA.showAlert('Key is empty');
+        return;
+      }
+      // check if the key is longer than 128 characters
+      if (this.akey.length > 128) {
+        this.TWA.showAlert('Error Key is longer than 128 characters');
+        return;
+      }
+      // check if the key contains a space
+      if (this.akey.indexOf(' ') >= 0) {
+        this.TWA.showAlert('Error Key contains a space');
+        return;
+      }
+      // check if the value is longer than 4096 characters
+      if (this.avalue.length > 4096) {
+        this.TWA.showAlert('Error Value is longer than 4096 characters');
+        return;
+      }
       this.TWA.CloudStorage.setItem(this.akey, this.avalue);
       this.TWA.showAlert('Item added key: ' + this.akey + ' value: ' + this.avalue);
     },
