@@ -48,7 +48,7 @@
 
     <h3>Bot API version available</h3>
     <b>version</b>: {{ TWA.version }} <br>
-    <b>isVersionAtLeast('6.4')</b>: {{ TWA.isVersionAtLeast('6.4') }} <br>
+    <b>isVersionAtLeast('6.9')</b>: {{ TWA.isVersionAtLeast('6.9') }} <br>
 
     <h3>Haptic Feedback</h3>
     <select v-model="style_selected">
@@ -78,6 +78,17 @@
     <button @click="showPopup()">Show Popup message</button><br>
     <button @click="showPopup2()">Show Popup message2</button><br>
     <br>
+    <h3>Cloud Storage</h3>
+ 
+    <button @click="TWA.CloudStorage.setItem(document.getElementById('key').value, document.getElementById('value').value)">Set key</button><br>
+    
+    <div v-for="key in cloud_storage_keys">
+      {{ key }} <br>
+    </div>
+    <br>
+    <input type="text" id="key" name="key" placeholder="key">
+    <input type="text" id="value" name="value" placeholder="value">
+    <button @click="TWA.CloudStorage.getKeys(this.processKeys)">Get keys</button><br>
   </div>
 </template>
 
@@ -105,6 +116,7 @@ export default {
     return {
       style_selected: 'medium',
       clipboard: null,
+      cloud_storage_keys: null,
     };
   },
   created() {
@@ -251,6 +263,13 @@ export default {
 
       this.TWA.showPopup(par);
     },
+    processKeys(error, data) {
+      if (error) {
+        this.TWA.showAlert(error);
+        return;
+      }
+      this.cloud_storage_keys = data;
+    }
   }
 }
 </script>
