@@ -197,7 +197,6 @@ export default {
     // End of callbacks
     //Cloud Storage
     addKeyValue() {
-
       if (this.akey === null || this.akey === '') {
         this.TWA.showAlert('Key is empty');
         return;
@@ -222,7 +221,6 @@ export default {
     },
     removeKey(key) {
       this.TWA.CloudStorage.removeItem(key);
-      this.TWA.showAlert('Removed key: ' + key);
     },
     processKeys(error, data) {
       if (error) {
@@ -237,6 +235,9 @@ export default {
         return;
       }
       this.cloud_storage_values = data;
+      const mergedArray = keys.map((key, index) => ({ [key]: values[index] }));
+
+
     },
     // End of Cloud Storage
     showQRScanner() {
