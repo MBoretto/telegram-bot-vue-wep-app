@@ -134,6 +134,12 @@ export default {
       avalue: null,
     };
   },
+  computed: {
+    arrayAsJSON() {
+      // Convert the array to a JSON string
+      return JSON.stringify(this.cloud_storage_values, null, 2);
+    }
+  },
   created() {
     // Binnding function to all the event types
     this.TWA.onEvent('themeChanged', this.themeChanged);
